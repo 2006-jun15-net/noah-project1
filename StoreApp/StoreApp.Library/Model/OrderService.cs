@@ -5,7 +5,7 @@ using System.Text;
 
 namespace StoreApp.Library.Model
 {
-    class OrderService
+    public class OrderService
     {
         private readonly IOrderRepository _orderRepo;
 
@@ -17,14 +17,14 @@ namespace StoreApp.Library.Model
             _LocationRepo = locationRepo;
         }
 
-        public Order PlaceOrder(ShoppingCart cart)
+        public Order PlaceOrder(ShoppingCart cart, Customer customer)
         {
             foreach(var product in cart.Items.Keys)
             {
                 cart.Location.Inventory[product] -= cart.Items[product];
             }
 
-            var order = new Order(cart);
+            var order = new Order(cart, customer);
 
             _orderRepo.Create(order);
             _LocationRepo.Update(cart.Location);

@@ -8,7 +8,7 @@ using StoreApp.Library.Model;
 
 namespace StoreApp.DataAccess.Repos
 {
-    class CustomerRepository : ICustomerRepository
+    public class CustomerRepository : ICustomerRepository
     {
         private readonly _2006StoreApplicationContext _context;
 
@@ -23,14 +23,26 @@ namespace StoreApp.DataAccess.Repos
         /// <returns>The Customers</returns>
         public IEnumerable<Customer> GetAll()
         {
-           var entities = _context.Customers.ToList();
-            return entities.Select(e => new Customer 
-                { 
-                    CustomerId = e.CustomerId, 
-                    FirstName = e.FirstName, 
-                    LastName = e.LastName, 
-                    UserName = e.UserName 
-                });
+            var entities = _context.Customers.ToList();
+            return entities.Select(e => new Customer
+            {
+                CustomerId = e.CustomerId,
+                FirstName = e.FirstName,
+                LastName = e.LastName,
+                UserName = e.UserName
+            });
+        }
+
+        public Customer GetByUsername(string username)
+        {
+            var entity = _context.Customers.First(c => c.UserName.Equals(username));
+            return new Customer
+            {
+                CustomerId = entity.CustomerId,
+                FirstName = entity.FirstName,
+                LastName = entity.LastName,
+                UserName = entity.UserName
+            };
         }
 
         /// <summary>
@@ -72,7 +84,7 @@ namespace StoreApp.DataAccess.Repos
             entity.FirstName = customer.FirstName;
             entity.LastName = customer.LastName;
             entity.UserName = customer.UserName;
-            
+
             _context.SaveChanges();
         }
     }

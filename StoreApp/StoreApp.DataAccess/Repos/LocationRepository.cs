@@ -9,7 +9,7 @@ using StoreApp.Library.Model;
 
 namespace StoreApp.DataAccess.Repos
 {
-    class LocationRepository : ILocationRepository, IProductRepository
+    public class LocationRepository : ILocationRepository, IProductRepository
     {
         private readonly _2006StoreApplicationContext _context;
 
@@ -28,7 +28,7 @@ namespace StoreApp.DataAccess.Repos
             {
                 StoreName = location.Name,
             };
-            
+
         }
 
         /// <summary>
@@ -39,11 +39,11 @@ namespace StoreApp.DataAccess.Repos
         {
             var entities = _context.Stores.ToList();
 
-            return entities.Select(e => new Store 
-                { 
-                    StoreId = e.StoreId, 
-                    Name = e.StoreName 
-                });
+            return entities.Select(e => new Store
+            {
+                StoreId = e.StoreId,
+                Name = e.StoreName
+            });
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace StoreApp.DataAccess.Repos
                     .Include(s => s.Inventory)
                     .First(s => s.StoreId == id);
             Dictionary<Product, int> inventory = new Dictionary<Product, int>();
-            foreach(var item in entity.Inventory)
+            foreach (var item in entity.Inventory)
             {
                 var product = _context.Products.Find(item.ProductId);
                 Product p = new Product
@@ -72,21 +72,29 @@ namespace StoreApp.DataAccess.Repos
         }
 
         /// <summary>
+        /// Gets a store without the inventory based on the id given
+        /// </summary>
+        /// <param name="id">The store id</param>
+        /// <returns>The Store</returns>
+        public Store GetById(int id)
+        {
+            var entity = _context.Stores.Find(id);
+                
+            return new Store { Name = entity.StoreName, StoreId = entity.StoreId };
+        }
+
+        /// <summary>
         /// Updates store inventory
         /// </summary>
         /// <param name="location">The store location</param>
         public void Update(Store location)
         {
             var entity = _context.Stores
-                .Include(s => s.Inventory)    
+                .Include(s => s.Inventory)
                 .First(s => s.StoreId == location.StoreId);
-            foreach(var item in location.Inventory.Keys)
+            foreach (var item in location.Inventory.Keys)
             {
-                entity.Inventory.Add(new Inventory
-                {
-                    ProductId = item.ProductId,
-                    Amount = location.Inventory[item]
-                });
+                entity.Inventory.First(i => i.ProductId == item.ProductId).Amount = location.Inventory[item];
             }
             _context.SaveChanges();
         }

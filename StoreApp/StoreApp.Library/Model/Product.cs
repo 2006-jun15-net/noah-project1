@@ -8,7 +8,7 @@ namespace StoreApp.Library.Model
     {
         private string _name;
         private decimal _price;
-        public int ProductId { get; set; } = 0;
+        public int ProductId { get; set; }
         public string Name 
         {
             get => _name;

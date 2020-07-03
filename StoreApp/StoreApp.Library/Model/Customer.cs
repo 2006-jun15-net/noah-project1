@@ -10,7 +10,7 @@ namespace StoreApp.Library.Model
         private string _UserName;
         private string _FirstName;
         private string _LastName;
-        public int CustomerId { get; set; } = 0;
+        public int CustomerId { get; set; }
         public string UserName 
         {
             get => _UserName;

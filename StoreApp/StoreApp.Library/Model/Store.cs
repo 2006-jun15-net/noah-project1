@@ -7,7 +7,7 @@ namespace StoreApp.Library.Model
     public class Store
     {
         private string _name;
-        public int StoreId { get; set; } = 0;
+        public int StoreId { get; set; }
         public string Name 
         {
             get => _name;

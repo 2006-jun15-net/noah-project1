@@ -11,7 +11,7 @@ namespace StoreApp.Library.Model
         private Customer _customer;
         private Store _store;
         private decimal _totalCost = 0;
-        public int OrderId { get; set; } = 0;
+        public int OrderId { get; set; }
         public DateTime? OrderDate { get; set; } = null;
         public Customer Customer 
         {
@@ -63,15 +63,17 @@ namespace StoreApp.Library.Model
             OrderDate = orderDate;
             Store = location;
             Customer = customer;
+            TotalCost = totalCost;
         }
-        public Order(Store location, DateTime orderDate, Dictionary<Product, int> orderLine)
+        public Order(Store location, DateTime orderDate, Dictionary<Product, int> orderLine, Customer customer)
         {
             Store = location;
             OrderDate = orderDate;
             OrderLine = orderLine;
+            Customer = customer;
         }
-        public Order(ShoppingCart cart)
-            : this(cart.Location, DateTime.Now, cart.Items)
+        public Order(ShoppingCart cart, Customer customer)
+            : this(cart.Location, DateTime.Now, cart.Items, customer)
         {
         }
     }

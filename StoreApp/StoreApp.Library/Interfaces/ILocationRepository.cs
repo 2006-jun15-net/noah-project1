@@ -8,6 +8,7 @@ namespace StoreApp.Library.Interfaces
     public interface ILocationRepository
     {
         IEnumerable<Store> GetAll();
+        Store GetById(int id);
         void Create(Store location);
         void Update(Store location);
     }
