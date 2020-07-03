@@ -7,7 +7,7 @@ namespace StoreApp.Library.Interfaces
 {
     public interface IProductRepository
     {
-        IEnumerable<Product> GetAllProducts();
+        Dictionary<Product, int> GetAllProducts(int id);
 
     }
 }

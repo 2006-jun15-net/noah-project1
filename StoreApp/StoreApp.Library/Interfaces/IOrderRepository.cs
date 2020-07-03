@@ -9,6 +9,6 @@ namespace StoreApp.Library.Interfaces
     {
         IEnumerable<Order> GetAll();
         void Create(Order order);
-        
+        IEnumerable<Order> GetOrderHistory(object model);
     }
 }

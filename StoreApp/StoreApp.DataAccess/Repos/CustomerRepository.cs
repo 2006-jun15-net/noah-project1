@@ -72,7 +72,7 @@ namespace StoreApp.DataAccess.Repos
             entity.FirstName = customer.FirstName;
             entity.LastName = customer.LastName;
             entity.UserName = customer.UserName;
-            _context.Customers.Update(entity);
+            
             _context.SaveChanges();
         }
     }

@@ -54,7 +54,16 @@ namespace StoreApp.Library.Model
             }
             set => _totalCost = value; 
         }
-
+        public Order()
+        {
+        }
+        public Order(int orderId, DateTime? orderDate, Store location, Customer customer, decimal totalCost)
+        {
+            OrderId = orderId;
+            OrderDate = orderDate;
+            Store = location;
+            Customer = customer;
+        }
         public Order(Store location, DateTime orderDate, Dictionary<Product, int> orderLine)
         {
             Store = location;
