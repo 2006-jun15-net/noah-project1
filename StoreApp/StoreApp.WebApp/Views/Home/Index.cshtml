@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to "StoreName"</h1>
+    <div>
+        <table class="table">
+           <tr>
+               <td>Register as a new customer</td>
+               <td><a asp-controller = "Customer" asp-action ="RegisterCustomer">Register</a></td>
+           </tr> 
+            <tr>
+                <td>Search customers by Username</td>
+                <td><a asp-controller="Customer" asp-action="Search">Search</a></td>
+            </tr>
+            <tr>
+                <td>Place an order</td>
+                <td>Order</td>
+            </tr>
+            <tr>
+                <td>Customer Order History</td>
+                <td><a>View</a></td>
+            </tr>
+            <tr>
+                <td>Location History</td>
+                <td><a>View</a></td>
+            </tr>
+            <tr>
+                <td>Products</td>
+                <td>View</td>
+            </tr>
+        </table>
+    </div>
+</div>
