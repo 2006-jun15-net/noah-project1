@@ -31,7 +31,10 @@ namespace StoreApp.WebApp
                 options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
 
             services.AddScoped<ICustomerRepository, CustomerRepository>();
-
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<IProductRepository, OrderRepository>();
+            services.AddScoped<IProductRepository, LocationRepository>();
             services.AddControllersWithViews();
         }
 

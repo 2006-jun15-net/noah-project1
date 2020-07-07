@@ -65,9 +65,9 @@ namespace StoreApp.WebApp.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Edit(string username)
+        public IActionResult Edit([FromRoute]string id)
         {
-            Customer customer = _customerRepo.GetByUsername(username);
+            Customer customer = _customerRepo.GetByUsername(id);
             var viewModel = new CustomerViewModel
             {
                 FirstName = customer.FirstName,
@@ -79,19 +79,19 @@ namespace StoreApp.WebApp.Controllers
         }
 
         [HttpPost] 
-        public IActionResult Edit([FromRoute] string username, [Bind("FirstName, LastName, Username")] CustomerViewModel viewModel)
+        public IActionResult Edit([Bind("FirstName, LastName, Username")] CustomerViewModel viewModel, [FromRoute] string id )
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Customer customer = _customerRepo.GetByUsername(username);
+                    Customer customer = _customerRepo.GetByUsername(id);
                     customer.FirstName = viewModel.FirstName;
                     customer.LastName = viewModel.LastName;
                     customer.UserName = viewModel.Username;
                     _customerRepo.Update(customer);
 
-                    return RedirectToAction(nameof(Details));
+                    return RedirectToAction(nameof(Details), new { username = customer.UserName });
                 }
                 return View(viewModel);
             }

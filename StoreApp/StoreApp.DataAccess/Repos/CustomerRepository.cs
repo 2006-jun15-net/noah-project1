@@ -35,7 +35,7 @@ namespace StoreApp.DataAccess.Repos
 
         public Customer GetByUsername(string username)
         {
-            var entity = _context.Customers.First(c => c.UserName.Equals(username));
+            Customers entity = _context.Customers.First(c => c.UserName.Equals(username));
             return new Customer
             {
                 CustomerId = entity.CustomerId,
@@ -84,7 +84,7 @@ namespace StoreApp.DataAccess.Repos
             entity.FirstName = customer.FirstName;
             entity.LastName = customer.LastName;
             entity.UserName = customer.UserName;
-
+            _context.Customers.Update(entity);
             _context.SaveChanges();
         }
     }
