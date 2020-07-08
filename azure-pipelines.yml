@@ -22,9 +22,15 @@ jobs:
     displayName: dotnet test
     inputs:
       command: 'test'
-      projects: '$(solutionPath)'
-      arguments: '-c Release --collect "Code coverage"'
+      arguments: '-c Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
+      publishTestResults: true
+      projects: '$(solutionPath)/StoreApp.Test/*.csproj'
       testRunTitle: 'ubuntu'
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish code coverage report'
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
 
   - script: dotnet publish -c Release -o ../publish
     displayName: dotnet publish
