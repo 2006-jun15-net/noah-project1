@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using StoreApp.Library.Interfaces;
 using StoreApp.Library.Model;
+using StoreApp.WebApp.ViewModels;
 
 namespace StoreApp.WebApp.Controllers
 {
@@ -12,24 +14,29 @@ namespace StoreApp.WebApp.Controllers
     {
         private readonly IOrderRepository _orderRepo;
         private readonly ILocationRepository _locationRepo;
-        private readonly IProductRepository _orderLineRepo;
 
-        public OrderController(IOrderRepository orderRepo, ILocationRepository locationRepo, IProductRepository orderLineRepo)
+        public OrderController(IOrderRepository orderRepo, ILocationRepository locationRepo)
         {
             _orderRepo = orderRepo;
             _locationRepo = locationRepo;
-            _orderLineRepo = orderLineRepo;
         }
-        public IActionResult PlaceOrder()
+        
+        public IActionResult PlaceOrder(int StoreId)
         {
-            return View();
+            var locations = _locationRepo.GetAll().ToList();
+
+            ViewBag.locations = locations;
+
+            var model = _locationRepo.GetById(StoreId);
+            model.Inventory = _locationRepo.GetAllProducts(model.StoreId);
+            return View(model);
         }
 
-        [HttpPost]
-        public IActionResult PlaceOrder(int id)
-        {
-            return View();
-        }
+        //[HttpPost]
+        //public IActionResult PlaceOrder(int id)
+        //{
+        //    return View();
+        //}
 
     }
 }

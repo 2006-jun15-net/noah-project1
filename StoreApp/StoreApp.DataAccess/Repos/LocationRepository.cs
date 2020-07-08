@@ -9,7 +9,7 @@ using StoreApp.Library.Model;
 
 namespace StoreApp.DataAccess.Repos
 {
-    public class LocationRepository : ILocationRepository, IProductRepository
+    public class LocationRepository : ILocationRepository
     {
         private readonly _2006StoreApplicationContext _context;
 

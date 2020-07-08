@@ -9,7 +9,7 @@ using System.Text;
 
 namespace StoreApp.DataAccess.Repos
 {
-    public class OrderRepository : IOrderRepository, IProductRepository
+    public class OrderRepository : IOrderRepository
     {
         private readonly _2006StoreApplicationContext _context;
 

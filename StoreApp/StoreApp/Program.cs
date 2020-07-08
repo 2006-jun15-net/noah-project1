@@ -31,8 +31,8 @@ namespace StoreApp.App
             ILocationRepository locationRepo = new LocationRepository(context);
             ICustomerRepository customerRepo = new CustomerRepository(context);
             IOrderRepository orderRepo = new OrderRepository(context);
-            IProductRepository inventoryRepo = new LocationRepository(context);
-            IProductRepository orderLineRepo = new OrderRepository(context);
+            //IProductRepository inventoryRepo = new LocationRepository(context);
+            //IProductRepository orderLineRepo = new OrderRepository(context);
             Customer currentCustomer = new Customer();
             bool quit = false;
             Console.WriteLine("Welcome to the Store Application");
@@ -110,7 +110,7 @@ namespace StoreApp.App
                         Console.WriteLine("Enter store id to order from:");
                         int sid = Int32.Parse(Console.ReadLine());
                         var store = locationRepo.GetById(sid);
-                        store.Inventory = inventoryRepo.GetAllProducts(store.StoreId);
+                        //store.Inventory = inventoryRepo.GetAllProducts(store.StoreId);
                         OrderService os = new OrderService(orderRepo, locationRepo);
                         ShoppingCart cart = new ShoppingCart(store);
                         while(true)

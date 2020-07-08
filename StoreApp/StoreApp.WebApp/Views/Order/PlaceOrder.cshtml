@@ -1,15 +1,51 @@
 ﻿
+@model StoreApp.Library.Model.Store
 @{
     ViewData["Title"] = "PlaceOrder";
 }
 
 <h1>PlaceOrder</h1>
-<select>
-    
-    <option>
-        store1
-    </option>
-    <option>
-        store2
-    </option>
-</select>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="PlaceOrder" method="get">
+            <div class="form-group">
+                <select asp-for="StoreId" asp-items="@(new SelectList(@ViewBag.locations,"StoreId","Name"))"></select>
+                <input type="submit"/>
+
+            </div>
+        </form>
+        <form>
+            <div class="form-group">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Model.Name</th>
+                            <th>Product Name</th>
+                            <th>Stock</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model.Inventory.Keys)
+                        {
+                        <tr>
+                            <td></td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @Model.Inventory[item]
+                            </td>
+                            <td><input type="text" name="qty"/></td>
+                        </tr>
+                        }
+                        
+                    </tbody>
+                </table>
+            </div>
+        </form> 
+    </div>
+
+</div>
+
+

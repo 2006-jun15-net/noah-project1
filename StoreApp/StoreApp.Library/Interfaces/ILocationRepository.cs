@@ -9,6 +9,7 @@ namespace StoreApp.Library.Interfaces
     {
         IEnumerable<Store> GetAll();
         Store GetById(int id);
+        Dictionary<Product, int> GetAllProducts(int id);
         void Create(Store location);
         void Update(Store location);
     }
