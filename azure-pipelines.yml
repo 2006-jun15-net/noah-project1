@@ -22,6 +22,8 @@ jobs:
 - job: build_windows
   pool:
     vmImage: windows-latest
+  variables:
+    buildConfiguration: 'Release'
     
   steps:
   - task: NuGetToolInstaller@1
@@ -40,12 +42,10 @@ jobs:
       solution: '**\*.sln'
       platform: 'Any CPU'
       configuration: 'Release'
-  - task: VSTest@2
+
+  - task: DotNetCoreCLI@2
     displayName: Run Tests
     inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\*test*.dll
-        !**\*TestAdapter.dll
-        !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
+      command: test
+      projects: '**/*Test/*.csproj'
+      arguments: '--configuration $(buildConfiguration)'
