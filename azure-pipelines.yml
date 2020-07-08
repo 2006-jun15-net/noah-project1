@@ -25,6 +25,7 @@ jobs:
     
   steps:
   - task: NuGetToolInstaller@1
+    displayName: install nuget
     inputs:
       versionSpec: 
 
@@ -40,4 +41,4 @@ jobs:
       solution: '**\*.sln'
       platform: 'Any CPU'
       configuration: 'Release'
-      restoreNugetPackages: true
+      
