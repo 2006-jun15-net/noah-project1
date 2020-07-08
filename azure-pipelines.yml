@@ -24,6 +24,16 @@ jobs:
     vmImage: windows-latest
     
   steps:
+  - task: NuGetToolInstaller@1
+    inputs:
+      versionSpec: 
+
+  - task: NuGetCommand@2
+    displayName: NuGetRestore
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln'
+      feedsToUse: 'select'
   - task: VSBuild@1
     displayName: Visual Studio Build
     inputs:
