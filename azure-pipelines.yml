@@ -23,7 +23,7 @@ jobs:
     inputs:
       command: 'test'
       projects: '$(solutionPath)'
-      arguments: '-c Release'
+      arguments: '-c Release --collect "Code coverage"'
       testRunTitle: 'ubuntu'
 
   - script: dotnet publish -c Release -o ../publish
@@ -31,6 +31,7 @@ jobs:
     workingDirectory: $(solutionPath)
 
   - task: AzureRmWebAppDeployment@4
+    displayName: deploy to Azure App Service
     inputs:
       ConnectionType: 'AzureRM'
       azureSubscription: 'Azure subscription 1(1f2ea6cb-77bc-4002-a917-07ca87ead705)'
