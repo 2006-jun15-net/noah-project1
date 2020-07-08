@@ -28,7 +28,6 @@ jobs:
     displayName: install nuget
     inputs:
       versionSpec: 
-
   - task: NuGetCommand@2
     displayName: NuGetRestore
     inputs:
@@ -41,4 +40,12 @@ jobs:
       solution: '**\*.sln'
       platform: 'Any CPU'
       configuration: 'Release'
-      
+  - task: VSTest@2
+    displayName: Run Tests
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+        **\*test*.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)'
