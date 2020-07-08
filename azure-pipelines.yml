@@ -6,14 +6,39 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+pr:
+- master
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+jobs:
+- job: build_linux
+  pool:
+    vmImage: 'ubuntu-latest'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  steps:
+  - script: dotnet build
+    displayName: dotnet build
+    workingDirectory: StoreApp
+
+- job: build_windows
+  pool:
+    vmImage: windows-latest
+    
+  steps:
+  - task: NuGetToolInstaller@1
+    displayName: install nuget
+    inputs:
+      versionSpec: 
+
+  - task: NuGetCommand@2
+    displayName: NuGetRestore
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln'
+      feedsToUse: 'select'
+  - task: VSBuild@1
+    displayName: Visual Studio Build
+    inputs:
+      solution: '**\*.sln'
+      platform: 'Any CPU'
+      configuration: 'Release'
+      
