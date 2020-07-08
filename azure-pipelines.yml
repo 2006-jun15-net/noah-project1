@@ -1,7 +1,4 @@
 # Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 
 trigger:
 - master
@@ -9,51 +6,36 @@ trigger:
 pr:
 - master
 
+variables:
+  solutionPath: StoreApp
+
 jobs:
 - job: build_linux
   pool:
     vmImage: 'ubuntu-latest'
 
   steps:
-  - script: dotnet build
+  - script: dotnet build -c Release
     displayName: dotnet build
-    workingDirectory: StoreApp
-
-- job: build_windows
-  pool:
-    vmImage: windows-latest
-  variables:
-    buildConfiguration: 'Release'
-    
-  steps:
-  - task: NuGetToolInstaller@1
-    displayName: install nuget
-    inputs:
-      versionSpec: 
-  - task: NuGetCommand@2
-    displayName: NuGetRestore
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-  - task: VSBuild@1
-    displayName: Visual Studio Build
-    inputs:
-      solution: '**\*.sln'
-      platform: 'Any CPU'
-      configuration: 'Release'
-
+    workingDirectory: $(solutionPath)
   - task: DotNetCoreCLI@2
-    displayName: Run Tests
+    displayName: dotnet test
     inputs:
-      command: test
-      projects: '**/*Test/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+      command: 'test'
+      projects: '$(solutionPath)'
+      arguments: '-c Release'
+      testRunTitle: 'ubuntu'
 
-  - task: DotNetCoreCLI@2
-    displayName: Deploy
+  - script: dotnet publish -c Release -o ../publish
+    displayName: dotnet publish
+    workingDirectory: $(solutionPath)
+
+  - task: AzureRmWebAppDeployment@4
     inputs:
-      command: publish
-      publishWebProjects: True
-      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-      zipAfterPublish: True
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Azure subscription 1(1f2ea6cb-77bc-4002-a917-07ca87ead705)'
+      appType: 'webApp'
+      WebAppName: 'nFuntanillaProject1'
+      packageForLinux: '$(System.DefaultWorkingDirectory)/publish'
+
+  
