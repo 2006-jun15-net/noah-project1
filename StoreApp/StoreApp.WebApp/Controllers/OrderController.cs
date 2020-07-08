@@ -21,15 +21,19 @@ namespace StoreApp.WebApp.Controllers
             _locationRepo = locationRepo;
         }
         
-        public IActionResult PlaceOrder(int StoreId)
+        public IActionResult GetProducts(int StoreId)
+        {
+            var model = _locationRepo.GetById(StoreId);
+            model.Inventory = _locationRepo.GetAllProducts(model.StoreId);
+            return View(model);
+        }
+        public IActionResult PlaceOrder()
         {
             var locations = _locationRepo.GetAll().ToList();
 
             ViewBag.locations = locations;
 
-            var model = _locationRepo.GetById(StoreId);
-            model.Inventory = _locationRepo.GetAllProducts(model.StoreId);
-            return View(model);
+            return View();
         }
 
         //[HttpPost]
