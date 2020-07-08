@@ -51,6 +51,7 @@ jobs:
       arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
   - task: DotNetCoreCLI@2
+    displayName: Deploy
     inputs:
       command: publish
       publishWebProjects: True
