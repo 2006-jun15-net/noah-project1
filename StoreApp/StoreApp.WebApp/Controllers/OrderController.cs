@@ -27,7 +27,39 @@ namespace StoreApp.WebApp.Controllers
             model.Inventory = _locationRepo.GetAllProducts(model.StoreId);
             return View(model);
         }
-        public IActionResult PlaceOrder()
+        [HttpPost]
+        public IActionResult GetProducts(int StoreId, [Bind("ProductId","qty")] OrderLineViewModel viewModel)
+        {
+            var model = _locationRepo.GetById(StoreId);
+            model.Inventory = _locationRepo.GetAllProducts(model.StoreId);
+            if (ModelState.IsValid)
+            {
+                decimal Total = 0;
+                foreach(var product in model.Inventory.Keys)
+                {
+                    if(TempData[product.Name] == null)
+                    {
+                        TempData[product.Name] = 0;
+                    }
+                    
+                    int count = (int)TempData[product.Name];
+                    if (product.ProductId == viewModel.ProductId)
+                    {
+                        count += viewModel.qty;
+                        TempData[product.Name] = count; 
+                    }
+                    TempData.Keep(product.Name);
+                   
+                    Total += product.Price*(int)TempData[product.Name];
+                }
+                ViewData["Total"] = Total;
+
+                return View(model);
+            }
+            return View(model);
+
+        }
+        public IActionResult GetLocation()
         {
             var locations = _locationRepo.GetAll().ToList();
 
@@ -35,6 +67,8 @@ namespace StoreApp.WebApp.Controllers
 
             return View();
         }
+
+        
 
         //[HttpPost]
         //public IActionResult PlaceOrder(int id)
