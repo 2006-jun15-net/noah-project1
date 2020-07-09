@@ -60,6 +60,7 @@ jobs:
 
   - task: AzureRmWebAppDeployment@4
     displayName: deploy to Azure App Service
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     inputs:
       ConnectionType: 'AzureRM'
       azureSubscription: 'Azure subscription 1(1f2ea6cb-77bc-4002-a917-07ca87ead705)'
