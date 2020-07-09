@@ -23,18 +23,11 @@ jobs:
       scannerMode: 'MSBuild'
       projectKey: '2006-jun15-net_noah-project1'
       projectName: 'Noah project 1 StoreApp'
+      extraProperties: sonar.cs.xunit.reportsPaths'$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
 
   - script: dotnet build -c Release
     displayName: dotnet build
     workingDirectory: $(solutionPath)
-
-  - task: SonarCloudAnalyze@1
-    displayName: sonarcloud run analysis
-
-  - task: SonarCloudPublish@1
-    displayName: sonarcloud publish
-    inputs:
-      pollingTimeoutSec: '300'
 
   - task: DotNetCoreCLI@2
     displayName: dotnet test
@@ -50,6 +43,13 @@ jobs:
     inputs:
       codeCoverageTool: 'Cobertura'
       summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+  - task: SonarCloudAnalyze@1
+    displayName: sonarcloud run analysis
+
+  - task: SonarCloudPublish@1
+    displayName: sonarcloud publish
+    inputs:
+      pollingTimeoutSec: '300'
 
   - script: dotnet publish -c Release -o ../publish
     displayName: dotnet publish
