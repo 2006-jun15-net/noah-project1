@@ -15,22 +15,44 @@ jobs:
     vmImage: 'ubuntu-latest'
 
   steps:
+  - task: SonarCloudPrepare@1
+    displayName: sonarcloud prepare analysis
+    inputs:
+      SonarCloud: 'sonarcloud nfuntanilla'
+      organization: '2006-jun15-net'
+      scannerMode: 'MSBuild'
+      projectKey: '2006-jun15-net_noah-project1'
+      projectName: 'Noah project 1 StoreApp'
+      extraProperties: |
+        sonar.exclusions=**/lib/**
+        sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
+        sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml
+
   - script: dotnet build -c Release
     displayName: dotnet build
     workingDirectory: $(solutionPath)
+
+  - task: SonarCloudAnalyze@1
+    displayName: sonarcloud run analysis
+
+  - task: SonarCloudPublish@1
+    displayName: sonarcloud publish
+    inputs:
+      pollingTimeoutSec: '300'
   - task: DotNetCoreCLI@2
     displayName: dotnet test
     inputs:
       command: 'test'
-      arguments: '-c Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
-      publishTestResults: true
-      projects: '$(solutionPath)/StoreApp.Test/*.csproj'
+      projects: '$(solutionPath)'
+      arguments: '-c Release --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover'
       testRunTitle: 'ubuntu'
+      
   - task: PublishCodeCoverageResults@1
-    displayName: 'Publish code coverage report'
+    displayName: 'publish code coverage'
     inputs:
       codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+      summaryFileLocation: '$(Agent.TempDirectory)/*/coverage.cobertura.xml'
+      failIfCoverageEmpty: true
 
   - script: dotnet publish -c Release -o ../publish
     displayName: dotnet publish
