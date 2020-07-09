@@ -23,7 +23,7 @@ jobs:
       scannerMode: 'MSBuild'
       projectKey: '2006-jun15-net_noah-project1'
       projectName: 'Noah project 1 StoreApp'
-      extraProperties: 'sonar.cs.xunit.$(Build.SourcesDirectory)/TestResults/Coverage/'
+      extraProperties: 'sonar.exclusions=**/lib/**'
 
   - script: dotnet build -c Release
     displayName: dotnet build
