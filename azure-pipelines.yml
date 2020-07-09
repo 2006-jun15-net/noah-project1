@@ -32,13 +32,6 @@ jobs:
     displayName: dotnet build
     workingDirectory: $(solutionPath)
 
-  - task: SonarCloudAnalyze@1
-    displayName: sonarcloud run analysis
-
-  - task: SonarCloudPublish@1
-    displayName: sonarcloud publish
-    inputs:
-      pollingTimeoutSec: '300'
   - task: DotNetCoreCLI@2
     displayName: dotnet test
     inputs:
@@ -53,7 +46,14 @@ jobs:
       codeCoverageTool: 'Cobertura'
       summaryFileLocation: '$(Agent.TempDirectory)/*/coverage.cobertura.xml'
       failIfCoverageEmpty: true
+  - task: SonarCloudAnalyze@1
+    displayName: sonarcloud run analysis
 
+  - task: SonarCloudPublish@1
+    displayName: sonarcloud publish
+    inputs:
+      pollingTimeoutSec: '300'
+      
   - script: dotnet publish -c Release -o ../publish
     displayName: dotnet publish
     workingDirectory: $(solutionPath)
