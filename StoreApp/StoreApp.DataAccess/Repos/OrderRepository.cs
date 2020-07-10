@@ -38,6 +38,7 @@ namespace StoreApp.DataAccess.Repos
             {
                 entity.OrderLines.Add(new OrderLines
                 {
+                    OrderId = entity.OrderId,
                     ProductId = item.ProductId,
                     Amount = order.OrderLine[item]
                 });

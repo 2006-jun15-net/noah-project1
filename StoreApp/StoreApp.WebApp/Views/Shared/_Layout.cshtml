@@ -27,6 +27,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Index">Register</a>
                         </li>
+                        <li>@TempData.Peek("Customer")</li>
                     </ul>
                 </div>
             </div>

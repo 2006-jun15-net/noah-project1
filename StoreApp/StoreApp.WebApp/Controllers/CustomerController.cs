@@ -44,6 +44,7 @@ namespace StoreApp.WebApp.Controllers
                 };
 
                 _customerRepo.Register(customer);
+                TempData["Customer"] = customer.UserName;
                 return RedirectToAction(nameof(Details), new { username = customer.UserName });
             }
             catch (Exception)
@@ -62,6 +63,7 @@ namespace StoreApp.WebApp.Controllers
                 LastName = customer.LastName,
                 Username = customer.UserName
             };
+            TempData["Customer"] = customer.UserName;
             return View(viewModel);
         }
 

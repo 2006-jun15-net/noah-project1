@@ -10,7 +10,6 @@ namespace StoreApp.Library.Model
     {
         private Customer _customer;
         private Store _store;
-        private decimal _totalCost = 0;
         public int OrderId { get; set; }
         public DateTime? OrderDate { get; set; } = null;
         public Customer Customer 
@@ -38,22 +37,8 @@ namespace StoreApp.Library.Model
             }
         }
         public Dictionary<Product, int> OrderLine { get; set; } = new Dictionary<Product, int>();
-        public decimal TotalCost 
-        { 
-            get
-            {
-                if(OrderLine.Count == 0)
-                {
-                    throw new Exception("There is no OrderLine for this order yet.");
-                }
-                foreach (var p in OrderLine.Keys)
-                {
-                    _totalCost += p.Price * OrderLine[p];
-                }
-                return _totalCost;
-            }
-            set => _totalCost = value; 
-        }
+        public decimal TotalCost { get; set; }
+    
         public Order()
         {
         }
@@ -65,15 +50,16 @@ namespace StoreApp.Library.Model
             Customer = customer;
             TotalCost = totalCost;
         }
-        public Order(Store location, DateTime orderDate, Dictionary<Product, int> orderLine, Customer customer)
+        public Order(Store location, DateTime orderDate, Dictionary<Product, int> orderLine, Customer customer, decimal totalCost)
         {
             Store = location;
             OrderDate = orderDate;
             OrderLine = orderLine;
             Customer = customer;
+            TotalCost = totalCost;
         }
-        public Order(ShoppingCart cart, Customer customer)
-            : this(cart.Location, DateTime.Now, cart.Items, customer)
+        public Order(ShoppingCart cart, Customer customer, decimal totalCost)
+            : this(cart.Location, DateTime.Now, cart.Items, customer, totalCost)
         {
         }
     }

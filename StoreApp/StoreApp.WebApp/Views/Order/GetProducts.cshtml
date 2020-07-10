@@ -37,10 +37,11 @@
         <div class="form-group">
             <label>Product<select name="ProductId" asp-items="@(new SelectList(Model.Inventory.Keys,"ProductId","Name"))"></select></label>
             <label for="qty">Qty</label>
-            <input type="text" name="qty" required/>
+            <input type="text" name="qty" required />
             <input type="submit" value="Add" />
         </div>
     </form>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 </div>
 <div>
     <h2>Order</h2>
@@ -63,7 +64,7 @@
                         @item.Price
                     </td>
                     <td>
-                        @TempData[item.Name] 
+                        @TempData.Peek(item.Name); 
                     </td>
                 </tr>
             }        
@@ -81,4 +82,13 @@
         </tfoot>
     </table>
 </div>
-
+<div>
+    <form asp-action="PlaceOrder" method="post">
+        @Html.Hidden("StoreId")
+        <input type="submit" value="View Cart"/>
+    </form>
+</div>
+<div>
+    <a asp-controller="Order" asp-action="GetLocation" asp-route-StoreId="@Model.StoreId">back</a>
+    <a asp-Controller="Home" asp-action="Index">Home</a>
+</div>

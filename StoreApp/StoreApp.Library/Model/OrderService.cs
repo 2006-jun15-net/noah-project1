@@ -19,12 +19,14 @@ namespace StoreApp.Library.Model
 
         public Order PlaceOrder(ShoppingCart cart, Customer customer)
         {
+            decimal totalCost = 0;
             foreach(var product in cart.Items.Keys)
             {
                 cart.Location.Inventory[product] -= cart.Items[product];
+                totalCost += product.Price * cart.Items[product];
             }
 
-            var order = new Order(cart, customer);
+            var order = new Order(cart, customer, totalCost);
 
             _orderRepo.Create(order);
             _LocationRepo.Update(cart.Location);

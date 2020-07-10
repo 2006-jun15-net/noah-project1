@@ -4,13 +4,12 @@
     ViewData["Title"] = "Locations";
 }
 
-<h1>PlaceOrder</h1>
+<h1>Select a Location</h1>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="GetProducts" method="get">
             <div class="form-group">
                 <select asp-for="StoreId" asp-items="@(new SelectList(@ViewBag.locations,"StoreId","Name"))"></select>
-             
                 <input type="submit"/>
             </div>
         </form>
