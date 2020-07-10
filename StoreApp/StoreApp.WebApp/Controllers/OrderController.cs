@@ -76,32 +76,6 @@ namespace StoreApp.WebApp.Controllers
             return View();
         }
 
-        //public IActionResult PlaceOrder(int StoreId)
-        //{
-        //    var model = _locationRepo.GetById(StoreId);
-        //    model.Inventory = _locationRepo.GetAllProducts(model.StoreId);
-        //    ShoppingCart cart = new ShoppingCart(model);
-        //    foreach(var product in model.Inventory.Keys)
-        //    {
-        //        int qty = (int)TempData[product.Name];
-        //        if(qty != 0)
-        //        {
-        //            try
-        //            {
-        //                cart.AddToCart(product, qty);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                ModelState.AddModelError("", ex.Message);
-        //                break;
-        //            }
-                    
-        //        }
-        //    }
-        //    return View(new ShoppingCartViewModel { Items = cart.Items, StoreId = model.StoreId});
-
-        //}
-
         [HttpPost]
         public IActionResult PlaceOrder(int StoreId)
         {
@@ -141,19 +115,19 @@ namespace StoreApp.WebApp.Controllers
             try
             {
                 OrderService os = new OrderService(_orderRepo, _locationRepo);
-                Order o = os.PlaceOrder(cart, customer);
+                os.PlaceOrder(cart, customer);
                     
-                return RedirectToAction(nameof(Details), new {username = customer.UserName });
+                return RedirectToAction(nameof(OrderHistory), new {username = customer.UserName });
             }
             catch (Exception)
             {
                 ModelState.AddModelError("", "Error in placing an order.");
-                return View();
+                return RedirectToAction(nameof(Index));
             }
                
         }
 
-        public IActionResult Details(string username)
+        public IActionResult OrderHistory(string username)
         {
             var orderHistory = _orderRepo.GetOrderHistory(_customerRepo.GetByUsername(username));
             List<OrderViewModel> viewModels = new List<OrderViewModel>();
@@ -169,6 +143,22 @@ namespace StoreApp.WebApp.Controllers
                 });
             }
             return View(viewModels);
+        }
+
+        public IActionResult Details(int OrderId)
+        {
+            Order order = _orderRepo.GetById(OrderId);
+            OrderViewModel orderDetails = new OrderViewModel
+            {
+                OrderId = order.OrderId,
+                OrderDate = (DateTime)order.OrderDate,
+                OrderLine = order.OrderLine,
+                Location = order.Store.Name,
+                CustomerUsername = order.Customer.UserName,
+                TotalCost = order.TotalCost
+            };
+            return View(orderDetails);
+            
         }
 
     }

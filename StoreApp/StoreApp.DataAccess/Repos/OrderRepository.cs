@@ -101,6 +101,39 @@ namespace StoreApp.DataAccess.Repos
         }
 
         /// <summary>
+        /// Gets an order with orderLines
+        /// </summary>
+        /// <param name="id">The order id</param>
+        /// <returns>The order</returns>
+        public Order GetById(int id)
+        {
+            var entity = _context.Orders
+                .Include(o => o.Store)
+                .Include(o => o.Customer)
+                .First(o => o.OrderId == id);
+            Order order = new Order
+            {
+                OrderId = entity.OrderId,
+                OrderDate = entity.OrderDate,
+                Customer = new Customer
+                {
+                    CustomerId = entity.Customer.CustomerId,
+                    FirstName = entity.Customer.FirstName,
+                    LastName = entity.Customer.LastName,
+                    UserName = entity.Customer.UserName
+                },
+                Store = new Store
+                {
+                    StoreId = entity.Store.StoreId,
+                    Name = entity.Store.StoreName
+                },
+                TotalCost = entity.TotalCost
+            };
+            order.OrderLine = GetAllProducts(entity.OrderId);
+            return order;
+        }
+
+        /// <summary>
         /// Gets Order History
         /// </summary>
         /// <param name="id">the id</param>

@@ -14,7 +14,7 @@ namespace StoreApp.Library.Model
             _LocationRepo = locationRepo;
         }
 
-        public Order PlaceOrder(ShoppingCart cart, Customer customer)
+        public void PlaceOrder(ShoppingCart cart, Customer customer)
         {
             decimal totalCost = 0;
             foreach(var product in cart.Items.Keys)
@@ -27,8 +27,6 @@ namespace StoreApp.Library.Model
 
             _orderRepo.Create(order);
             _LocationRepo.Update(cart.Location);
-
-            return order;
         }
     }
 }

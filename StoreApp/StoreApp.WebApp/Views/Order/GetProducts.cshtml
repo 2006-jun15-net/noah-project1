@@ -64,7 +64,7 @@
                         @item.Price
                     </td>
                     <td>
-                        @TempData.Peek(item.Name); 
+                        @TempData[item.Name]
                     </td>
                 </tr>
             }        
@@ -85,7 +85,7 @@
 <div>
     <form asp-action="PlaceOrder" method="post">
         @Html.Hidden("StoreId")
-        <input type="submit" value="View Cart"/>
+        <input type="submit" value="Submit"/>
     </form>
 </div>
 <div>

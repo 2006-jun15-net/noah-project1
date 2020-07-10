@@ -18,7 +18,6 @@ namespace StoreApp.WebApp.ViewModels
                 }
                 return _cost;
             }
-            set => _cost = value;
         }
     }
 }

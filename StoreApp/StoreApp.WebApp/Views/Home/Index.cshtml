@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <td>Customer Order History</td>
-                <td><a>View</a></td>
+                <td><a asp-controller="Order" asp-action="OrderHistory" asp-route-username="@TempData.Peek("Customer")">View</a></td>
             </tr>
             <tr>
                 <td>Location History</td>
