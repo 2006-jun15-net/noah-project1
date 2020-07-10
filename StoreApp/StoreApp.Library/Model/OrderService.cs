@@ -1,7 +1,4 @@
 ﻿using StoreApp.Library.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StoreApp.Library.Model
 {

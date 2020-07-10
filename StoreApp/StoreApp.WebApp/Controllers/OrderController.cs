@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
 using StoreApp.Library.Interfaces;
 using StoreApp.Library.Model;
 using StoreApp.WebApp.ViewModels;

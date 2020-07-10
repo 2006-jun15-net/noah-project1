@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using StoreApp.DataAccess.Model;
 using StoreApp.Library.Interfaces;
 using StoreApp.Library.Model;

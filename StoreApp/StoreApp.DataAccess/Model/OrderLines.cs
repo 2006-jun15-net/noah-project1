@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace StoreApp.DataAccess.Model
+﻿namespace StoreApp.DataAccess.Model
 {
     public partial class OrderLines
     {

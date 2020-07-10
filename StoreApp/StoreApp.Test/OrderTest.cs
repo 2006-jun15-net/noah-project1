@@ -1,6 +1,5 @@
 ﻿using StoreApp.Library.Model;
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace StoreApp.Test
@@ -34,31 +33,7 @@ namespace StoreApp.Test
         {
             Assert.Empty(order.OrderLine);
         }
-        [Fact]
-        public void TotalCostCalculatesCorrectly()
-        {
-            //arrange
-            decimal randomPrice1 = 100;
-            int randomQty1 = 2;
-            decimal randomPrice2 = 50;
-            int randomQty2 = 3;
-            Dictionary<Product, int> ol = new Dictionary<Product, int>();
-            ol.Add(new Product { Name = "p1", Price = randomPrice1 }, randomQty1);
-            ol.Add(new Product { Name = "p2", Price = randomPrice2 }, randomQty2);
-            order.OrderLine = ol;
-
-            //act
-            decimal TotalCost = randomPrice1 * randomQty1 + randomPrice2 * randomQty2;
-
-            //assert
-            Assert.Equal(TotalCost, order.TotalCost);
-
-        }
-        [Fact]
-        public void TotalCostThrowsExceptionWhenOrderLineIsEmpty()
-        {
-            Assert.ThrowsAny<Exception>(() => order.TotalCost);
-        }
+        
     }
 
 }
