@@ -144,6 +144,37 @@ namespace StoreApp.WebApp.Controllers
             }
             return View(viewModels);
         }
+        
+        public IActionResult LocationOrderHistory()
+        {
+            ViewBag.locations = _locationRepo.GetAll();
+            
+            return View(new StoreViewModel());
+        }
+
+        [HttpPost]
+        public IActionResult LocationOrderHistory(int StoreId)
+        {
+            ViewBag.locations = _locationRepo.GetAll();
+            var location = _locationRepo.GetById(StoreId);
+            StoreViewModel viewModel = new StoreViewModel
+            {
+                StoreId = location.StoreId,
+                Name = location.Name,
+            };
+            var orderHistory = _orderRepo.GetOrderHistory(location);
+            viewModel.OrderHistory = orderHistory.Select(o => new OrderViewModel
+            { 
+                OrderId = o.OrderId,
+                OrderDate = (DateTime)o.OrderDate,
+                Location = o.Store.Name,
+                CustomerUsername = o.Customer.UserName,
+                TotalCost = o.TotalCost
+                
+            }).ToList();
+            return View(viewModel);
+
+        }
 
         public IActionResult Details(int OrderId)
         {

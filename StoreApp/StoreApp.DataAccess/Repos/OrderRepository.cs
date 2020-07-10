@@ -177,7 +177,7 @@ namespace StoreApp.DataAccess.Repos
                 var entities = _context.Orders
                     .Include(o => o.Store)
                     .Include(o => o.Customer)
-                    .Where(o => o.CustomerId == store.StoreId);
+                    .Where(o => o.StoreId == store.StoreId);
                 var orders = entities.Select(e => new Order
                 (
                     e.OrderId,
