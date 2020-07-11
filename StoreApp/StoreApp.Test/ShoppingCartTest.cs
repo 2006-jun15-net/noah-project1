@@ -19,10 +19,12 @@ namespace StoreApp.Test
         public void AddToCartThrowsExceptionWhenQtyIsGreaterThanStock()
         {
             //arrange
-            
-            Dictionary<Product, int> inv = new Dictionary<Product, int>();
-            inv.Add(new Product { Name = "p1", Price = 100 }, 20);
-            inv.Add(new Product { Name = "p2", Price = 200 }, 10);
+
+            Dictionary<Product, int> inv = new Dictionary<Product, int>
+            {
+                { new Product { Name = "p1", Price = 100 }, 20 },
+                { new Product { Name = "p2", Price = 200 }, 10 }
+            };
             Store location = new Store
             {
                 Name = "TestStore",

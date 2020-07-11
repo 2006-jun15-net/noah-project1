@@ -16,18 +16,6 @@ namespace StoreApp.DataAccess.Repos
             _context = context;
         }
 
-        /// <summary>
-        /// Creates a new store in the database
-        /// </summary>
-        /// <param name="location">The store location</param>
-        public void Create(Store location)
-        {
-            var entity = new Stores
-            {
-                StoreName = location.Name,
-            };
-
-        }
 
         /// <summary>
         /// Gets all the locations without the inventories

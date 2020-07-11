@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using StoreApp.Library.Interfaces;
 using StoreApp.Library.Model;
 using StoreApp.WebApp.ViewModels;
@@ -11,11 +10,11 @@ namespace StoreApp.WebApp.Controllers
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository _customerRepo;
-        private readonly ILogger<CustomerController> _logger;
-        public CustomerController(ICustomerRepository customerRepo, ILogger<CustomerController> logger)
+      
+        public CustomerController(ICustomerRepository customerRepo)
         {
             _customerRepo = customerRepo;
-            _logger = logger;
+
         }
 
        

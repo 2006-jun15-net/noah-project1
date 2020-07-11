@@ -3,14 +3,14 @@
     ViewData["Title"] = "LocationOrderHistory";
 }
 
-<h1>LocationOrderHistory</h1>
-<h1>Select a Location</h1>
+<h1>Location Order History</h1>
+<h4>Select a Location</h4>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="LocationOrderHistory" method="post">
             <div class="form-group">
                 <select asp-for="StoreId" asp-items="@(new SelectList(@ViewBag.locations,"StoreId","Name"))"></select>
-                <input type="submit" />
+                <input type="submit" class="btn btn-primary"/>
             </div>
         </form>
     </div>

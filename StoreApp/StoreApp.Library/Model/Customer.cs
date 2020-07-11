@@ -11,7 +11,7 @@ namespace StoreApp.Library.Model
         public int CustomerId { get; set; }
         public string UserName 
         {
-            get => _UserName;
+          get => _UserName;
           set
             {
                 if(value.Length == 0)
@@ -54,8 +54,6 @@ namespace StoreApp.Library.Model
                 }
             }
         }
-        public List<Order> OrderHistory { get; set; } = new List<Order>();
-
 
     }
 }

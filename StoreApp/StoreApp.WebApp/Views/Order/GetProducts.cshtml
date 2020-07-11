@@ -35,10 +35,10 @@
 <div>
     <form asp-action="GetProducts" method="post" asp-route-StoreId="@Model.StoreId">
         <div class="form-group">
-            <label>Product<select name="ProductId" asp-items="@(new SelectList(Model.Inventory.Keys,"ProductId","Name"))"></select></label>
-            <label for="qty">Qty</label>
-            <input type="text" name="qty" required />
-            <input type="submit" value="Add" />
+            <label id="Products">Product:<select name="ProductId" asp-items="@(new SelectList(Model.Inventory.Keys,"ProductId","Name"))"></select></label>
+            <label id="QtyLabel" for="qty">Qty:</label>
+            <input id="Quantity" type="text" name="qty" required />
+            <input type="submit" value="Add" class="btn btn-secondary" />
         </div>
     </form>
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -85,10 +85,14 @@
 <div>
     <form asp-action="PlaceOrder" method="post">
         @Html.Hidden("StoreId")
-        <input type="submit" value="Submit"/>
+        <input type="submit" value="Submit" class="btn btn-primary" />
+        <span id="ErrorMsg">@TempData["errorMsg"]</span>
     </form>
+    
 </div>
+<br />
 <div>
-    <a asp-controller="Order" asp-action="GetLocation" asp-route-StoreId="@Model.StoreId">back</a>
-    <a asp-Controller="Home" asp-action="Index">Home</a>
+    <span>
+        <a asp-controller="Order" asp-action="GetLocation" asp-route-StoreId="@Model.StoreId">Select Different Location</a>
+    </span>
 </div>

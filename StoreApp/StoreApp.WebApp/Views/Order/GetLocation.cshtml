@@ -10,7 +10,7 @@
         <form asp-action="GetProducts" method="get">
             <div class="form-group">
                 <select asp-for="StoreId" asp-items="@(new SelectList(@ViewBag.locations,"StoreId","Name"))"></select>
-                <input type="submit"/>
+                <input type="submit" class="btn btn-primary"/>
             </div>
         </form>
         

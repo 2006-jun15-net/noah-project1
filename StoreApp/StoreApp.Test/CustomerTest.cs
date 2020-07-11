@@ -33,11 +33,6 @@ namespace StoreApp.Test
             Assert.ThrowsAny<ArgumentException>(() => customer.UserName = "");
         }
 
-        [Fact]
-        public void OrderHistoryDefaultsToEmpty()
-        {
-            Assert.Empty(customer.OrderHistory);
-        }
 
         [Fact]
         public void IdDefaultsToZero()

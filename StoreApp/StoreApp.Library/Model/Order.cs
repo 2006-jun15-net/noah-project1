@@ -14,11 +14,7 @@ namespace StoreApp.Library.Model
             get => _customer; 
             set
             {
-                if(value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Orders must have a Customer.");
-                }
-                _customer = value;
+                _customer = value ?? throw new ArgumentNullException(nameof(value), "Orders must have a Customer.");
             }
         }
         public Store Store 
@@ -26,11 +22,7 @@ namespace StoreApp.Library.Model
             get => _store;
             set
             {
-                if(value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Orders must have a Store.");
-                }
-                _store = value;
+                _store = value ?? throw new ArgumentNullException(nameof(value), "Orders must have a Store.");
             }
         }
         public Dictionary<Product, int> OrderLine { get; set; } = new Dictionary<Product, int>();

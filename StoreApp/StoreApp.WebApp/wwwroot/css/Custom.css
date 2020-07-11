@@ -1,0 +1,35 @@
+﻿#ErrorMsg {
+    color:red;
+    font-weight: bold;
+    font-size:larger;
+}
+#HomeMenu{
+    margin: auto;
+    vertical-align: middle;
+    width: 50%;
+}
+#HomeMenu td{
+    text-align:left;
+}
+select{
+    font-size: 16px;
+    height: 30px;
+    width: 200px;
+    padding-left: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+#Products{
+    font-weight: bold;
+}
+#QtyLabel{
+    font-weight:bold;
+}
+#Quantity{
+    width:50px;
+    margin-left: 5px;
+}
+
+
+
+

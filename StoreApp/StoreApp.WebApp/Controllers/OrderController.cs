@@ -13,12 +13,14 @@ namespace StoreApp.WebApp.Controllers
         private readonly IOrderRepository _orderRepo;
         private readonly ILocationRepository _locationRepo;
         private readonly ICustomerRepository _customerRepo;
+        private readonly OrderService _orderService;
 
         public OrderController(IOrderRepository orderRepo, ILocationRepository locationRepo, ICustomerRepository customerRepo)
         {
             _orderRepo = orderRepo;
             _locationRepo = locationRepo;
             _customerRepo = customerRepo;
+            _orderService = new OrderService(_orderRepo, _locationRepo);
         }
 
         public IActionResult GetProducts(int StoreId)
@@ -64,7 +66,12 @@ namespace StoreApp.WebApp.Controllers
 
                 return View(model);
             }
-            return View(model);
+            else
+            {
+                ModelState.AddModelError("", "Invalid quantity.");
+                return View(model);
+            }
+            
 
         }
         public IActionResult GetLocation()
@@ -82,8 +89,28 @@ namespace StoreApp.WebApp.Controllers
             var location = _locationRepo.GetById(StoreId);
             location.Inventory = _locationRepo.GetAllProducts(location.StoreId);
             ShoppingCart cart = new ShoppingCart(location);
+            string username = (string)TempData["Customer"];
+            Customer customer;
+
+            //Check that user is signed in 
+            try
+            {
+                customer = _customerRepo.GetByUsername(username);
+            }
+            catch (Exception)
+            {
+                TempData["errorMsg"] = "No customer for the order. Register or Sign in and try again.";
+                return RedirectToAction(nameof(GetProducts), new { location.StoreId });
+            }
+
+            //Fill cart, if cart is empty return with error
             foreach (var product in location.Inventory.Keys)
             {
+                if (TempData[product.Name] == null)
+                {
+                    TempData["errorMsg"] = "No products in order.";
+                    return RedirectToAction(nameof(GetProducts), new { location.StoreId });
+                }
                 int qty = (int)TempData[product.Name];
                 if (qty != 0)
                 {
@@ -93,42 +120,41 @@ namespace StoreApp.WebApp.Controllers
                     }
                     catch (Exception ex)
                     {
-                        ModelState.AddModelError("", ex.Message);
+                        TempData["errorMsg"] = ex.Message;
                         return RedirectToAction(nameof(GetProducts), new { location.StoreId });
                     }
 
                 }
             }
-            
-            string username = (string)TempData["Customer"];
-            Customer customer;
-            try
+            if (cart.Items.Count == 0)
             {
-                customer = _customerRepo.GetByUsername(username);
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError("", "No customer for the order. Register or Sign in and try again.");
-                return RedirectToAction(nameof(Index));
+                TempData["errorMsg"] = "No products in order.";
+                return RedirectToAction(nameof(GetProducts), new { location.StoreId });
             }
 
+            //Create the order with order service then display customer order history
             try
             {
-                OrderService os = new OrderService(_orderRepo, _locationRepo);
-                os.PlaceOrder(cart, customer);
+                
+                _orderService.PlaceOrder(cart, customer);
                     
                 return RedirectToAction(nameof(OrderHistory), new {username = customer.UserName });
             }
             catch (Exception)
             {
-                ModelState.AddModelError("", "Error in placing an order.");
-                return RedirectToAction(nameof(Index));
+                TempData["errorMsg"] = "Error in placing an order.";
+                return RedirectToAction(nameof(GetProducts), new { location.StoreId });
             }
                
         }
 
         public IActionResult OrderHistory(string username)
         {
+            if(username == null)
+            {
+                ViewData["ErrorMsg"] = "No customer signed in to view history.";
+                return View();
+            }
             var orderHistory = _orderRepo.GetOrderHistory(_customerRepo.GetByUsername(username));
             List<OrderViewModel> viewModels = new List<OrderViewModel>();
             foreach(var order in orderHistory)
