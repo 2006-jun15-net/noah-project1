@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using StoreApp.DataAccess.Model;
@@ -65,7 +66,10 @@ namespace StoreApp.DataAccess.Repos
         public Store GetById(int id)
         {
             var entity = _context.Stores.Find(id);
-                
+            if (entity == null)
+            {
+                throw new Exception($"Store not found with ID: {id}");
+            } 
             return new Store { Name = entity.StoreName, StoreId = entity.StoreId };
         }
 

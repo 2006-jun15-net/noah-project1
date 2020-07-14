@@ -53,27 +53,45 @@ namespace StoreApp.WebApp.Controllers
 
         public IActionResult Details(string username)
         {
-            Customer customer = _customerRepo.GetByUsername(username);
-            var viewModel = new CustomerViewModel
+            try
             {
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                Username = customer.UserName
-            };
-            TempData["Customer"] = customer.UserName;
-            return View(viewModel);
+                Customer customer = _customerRepo.GetByUsername(username);
+                var viewModel = new CustomerViewModel
+                {
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    Username = customer.UserName
+                };
+                TempData["Customer"] = customer.UserName;
+                return View(viewModel);
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMsg"] = "User not found.";
+                return RedirectToAction(nameof(Search));
+            }
+            
         }
 
-        public IActionResult Edit([FromRoute]string id)
+        public IActionResult Edit(string username)
         {
-            Customer customer = _customerRepo.GetByUsername(id);
-            var viewModel = new CustomerViewModel
+            try
             {
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                Username = customer.UserName
-            };
-            return View(viewModel);
+                Customer customer = _customerRepo.GetByUsername(username);
+                var viewModel = new CustomerViewModel
+                {
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    Username = customer.UserName
+                };
+                return View(viewModel);
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMsg"] = "User not found.";
+                return RedirectToAction(nameof(Search));
+            }
+            
 
         }
 

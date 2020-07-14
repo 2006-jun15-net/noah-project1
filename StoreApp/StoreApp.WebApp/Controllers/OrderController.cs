@@ -25,9 +25,18 @@ namespace StoreApp.WebApp.Controllers
 
         public IActionResult GetProducts(int StoreId)
         {
-            var model = _locationRepo.GetById(StoreId);
-            model.Inventory = _locationRepo.GetAllProducts(model.StoreId);
-            return View(model);
+            try
+            {
+                var model = _locationRepo.GetById(StoreId);
+                model.Inventory = _locationRepo.GetAllProducts(model.StoreId);
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMsg"] = e.Message;
+                return RedirectToAction(nameof(GetLocation));
+            }
+            
         }
         [HttpPost]
         public IActionResult GetProducts(int StoreId, [Bind("ProductId","qty")] OrderLineViewModel viewModel)
@@ -150,25 +159,30 @@ namespace StoreApp.WebApp.Controllers
 
         public IActionResult OrderHistory(string username)
         {
-            if(username == null)
+            try
             {
-                ViewData["ErrorMsg"] = "No customer signed in to view history.";
+                var orderHistory = _orderRepo.GetOrderHistory(_customerRepo.GetByUsername(username));
+                List<OrderViewModel> viewModels = new List<OrderViewModel>();
+                foreach (var order in orderHistory)
+                {
+                    viewModels.Add(new OrderViewModel
+                    {
+                        OrderDate = (DateTime)order.OrderDate,
+                        OrderId = order.OrderId,
+                        OrderLine = order.OrderLine,
+                        Location = order.Store.Name,
+                        TotalCost = order.TotalCost
+                    });
+                }
+                return View(viewModels);
+            }
+            catch (Exception)
+            {
+                ViewData["ErrorMsg"] = "Invalid customer or customer not detected. Please sign in and try again.";
                 return View();
             }
-            var orderHistory = _orderRepo.GetOrderHistory(_customerRepo.GetByUsername(username));
-            List<OrderViewModel> viewModels = new List<OrderViewModel>();
-            foreach(var order in orderHistory)
-            {
-                viewModels.Add(new OrderViewModel
-                {
-                    OrderDate = (DateTime)order.OrderDate,
-                    OrderId = order.OrderId,
-                    OrderLine = order.OrderLine,
-                    Location = order.Store.Name,
-                    TotalCost = order.TotalCost
-                });
-            }
-            return View(viewModels);
+           
+            
         }
         
         public IActionResult LocationOrderHistory()
@@ -204,17 +218,26 @@ namespace StoreApp.WebApp.Controllers
 
         public IActionResult Details(int OrderId)
         {
-            Order order = _orderRepo.GetById(OrderId);
-            OrderViewModel orderDetails = new OrderViewModel
+            try
             {
-                OrderId = order.OrderId,
-                OrderDate = (DateTime)order.OrderDate,
-                OrderLine = order.OrderLine,
-                Location = order.Store.Name,
-                CustomerUsername = order.Customer.UserName,
-                TotalCost = order.TotalCost
-            };
-            return View(orderDetails);
+                Order order = _orderRepo.GetById(OrderId);
+                OrderViewModel orderDetails = new OrderViewModel
+                {
+                    OrderId = order.OrderId,
+                    OrderDate = (DateTime)order.OrderDate,
+                    OrderLine = order.OrderLine,
+                    Location = order.Store.Name,
+                    CustomerUsername = order.Customer.UserName,
+                    TotalCost = order.TotalCost
+                };
+                return View(orderDetails);
+            }
+            catch (Exception)
+            {
+                ViewData["ErrorMsg"] = "Order not found.";
+                return View(new OrderViewModel());
+            }
+            
             
         }
 
