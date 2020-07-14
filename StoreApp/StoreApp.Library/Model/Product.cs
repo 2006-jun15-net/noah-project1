@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace StoreApp.Library.Model
 {
@@ -20,6 +21,7 @@ namespace StoreApp.Library.Model
             }
                 
         }
+        [DisplayFormat(DataFormatString="{0:C}")]
         public decimal Price 
         {
             get => _price;

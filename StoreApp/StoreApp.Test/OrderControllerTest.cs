@@ -73,5 +73,25 @@ namespace StoreApp.Test
             //assert 
             Assert.IsType<OrderViewModel>(result.Model);
         }
+        [Fact]
+        public void OrderController_GetProducts_ReturnsStoreModel()
+        {
+            //arrange
+            locationRepo.Setup(repo => repo.GetById(1))
+                .Returns(new Store()
+                {
+                    StoreId = 1
+                }) ;
+
+            locationRepo.Setup(repo => repo.GetAllProducts(It.IsAny<Int32>()))
+                .Returns(new Dictionary<Product, int>());
+
+            //act
+            var controller = new OrderController(orderRepo.Object, locationRepo.Object, customerRepo.Object);
+            var result = (ViewResult)controller.GetProducts(1);
+
+            //assert
+            Assert.IsType<Store>(result.Model);
+        }
     }
 }
